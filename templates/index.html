@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<div class="jumbotron text-center">
+        <h3>Welcome Blog Page </h3>
+        <p>You can create your own articles and follow up them in any time!</p>
+</div>
+
+
+<p>
+        {% if request.user.is_authenticated %}
+                Signed by  {{request.user.username}}
+        {% else %}
+                Not signed in 
+        {% endif %}
+
+</p>
+{% endblock body %}
+
