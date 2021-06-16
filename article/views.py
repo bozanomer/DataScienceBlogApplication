@@ -3,7 +3,7 @@ from .forms import ArticleForm
 from .models import Article,Comment
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-# Create your views here.
+
 
 def articles(request):
     keyword = request.GET.get("keyword")
@@ -19,6 +19,7 @@ def index(request):
     
 def about(request):
     return render(request,"about.html")
+
 @login_required(login_url = "user:login")
 def dashboard(request):
     articles = Article.objects.filter(author = request.user)
@@ -26,6 +27,7 @@ def dashboard(request):
         "articles":articles
     }
     return render(request,"dashboard.html",context)
+
 @login_required(login_url = "user:login")
 def addArticle(request):
     form = ArticleForm(request.POST or None,request.FILES or None)
@@ -39,12 +41,14 @@ def addArticle(request):
         messages.success(request,"Article was published successfully")
         return redirect("article:dashboard")
     return render(request,"addarticle.html",{"form":form})
+
 def detail(request,id):
     #article = Article.objects.filter(id = id).first()   
     article = get_object_or_404(Article,id = id)
 
     comments = article.comments.all()
     return render(request,"detail.html",{"article":article,"comments":comments})
+
 @login_required(login_url = "user:login")
 def updateArticle(request,id):
 
@@ -61,6 +65,7 @@ def updateArticle(request,id):
 
 
     return render(request,"update.html",{"form":form})
+
 @login_required(login_url = "user:login")
 def deleteArticle(request,id):
     article = get_object_or_404(Article,id = id)
@@ -70,6 +75,7 @@ def deleteArticle(request,id):
     messages.success(request,"Article deleted successfully")
 
     return redirect("article:dashboard")
+
 @login_required(login_url = "user:login")   
 def addComment(request,id):
     article = get_object_or_404(Article,id = id)
